@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMoralis } from "react-moralis";
 
 const Header = () => {
 
-  const { authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
-  // console.log(user)
+  const { authenticate, isAuthenticated, Moralis, user, account, logout } = useMoralis();
+  const [currentUser, setCurrentUser] = useState(null);
   // logout()
   useEffect(() => {
     if (isAuthenticated) {
@@ -13,20 +13,39 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    let arg = {
+      serverUrl: 'https://fsk90n6sk99s.usemoralis.com:2053/server',
+      appId: 'rqKaebnWsemjUzlerJkb3aTmQuLrCZ3cfOOJhKv3',
+      masterKey: 'fSuNNsCW2SAjB5SutKuro1ukxtRzn8V0dvpJ43gm',
+    };
+    Moralis.start(arg)
+
+    let User = Moralis.User.current()
+    if (User) {
+      setCurrentUser(User!.get("ethAddress"))
+    }
+
+  }, []);
+
   const login = async () => {
-    console.log(isAuthenticated)
+    // console.log("user", user!.get("ethAddress"))
+    // console.log("account", account)
+    // console.log("isAuthenticated", isAuthenticated);return;
     if (!isAuthenticated) {
 
-      await authenticate({ signingMessage: "Sign into your Marketplace..." })
+      await authenticate()
         .then(function (user) {
-          console.log("logged in user:", user);
           console.log(user!.get("ethAddress"));
         })
         .catch(function (error) {
           console.log(error);
         });
+
+
     }
   }
+
   const shortenString = (str: string) => {
     return str.substring(0, 6) + '...' + str.substring(str.length - 4)
   }
@@ -66,13 +85,13 @@ const Header = () => {
 
               <div className="setting-option header-btn rbt-site-header" id="rbt-site-header">
                 <div className="icon-box">
-                  <button id="connectbtn" onClick={login} className="btn btn-primary-alta btn-small font-12" >{account ? <span>{shortenString(account)}</span> : <span>Connect Wallet</span>}</button>
+                  <button id="connectbtn" onClick={() => login()} className="btn btn-primary-alta btn-small font-12" >{currentUser ? <span>{shortenString(currentUser)}</span> : <span>Connect Wallet</span>}</button>
                 </div>
               </div>
 
               <div className="setting-option rn-icon-list notification-badge">
                 <div className="icon-box">
-                  <a href="activity.html"><i className="feather-bell"></i><span className="badge">6</span></a>
+                  <a href="#"><i className="feather-bell"></i><span className="badge">6</span></a>
                 </div>
               </div>
 

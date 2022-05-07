@@ -1,4 +1,4 @@
-import $ from './$';
+// import $ from './$';
 (function ($) {
     'use strict';
 
