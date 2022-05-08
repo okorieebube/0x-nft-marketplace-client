@@ -4,6 +4,29 @@ import Header from '../components/Header/Header'
 import Modal from '../components/Modal/Modal'
 
 const MintNewNft = () => {
+    
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const values = Object.fromEntries(data.entries());
+    console.log(values);return;
+    // let validation = new Validator(values, rules);
+
+    // validation.setAttributeNames(attributes);
+    // if (userAccount == undefined) {
+    //   SimpleToastError("Connect your wallet to proceed!");
+    //   return;
+    // }
+
+    // if (validation.fails()) {
+    //   ToastFormErrors(MapFormErrorsInArr(validation.errors.errors));
+    // }
+
+    // if (validation.passes()) {
+    //   // console.log("passed");
+    //   dispatch(buyTokens(values.amount, referrer, userAccount));
+    // }
+  };
     return (
         <div>
         <Header />
@@ -12,13 +35,13 @@ const MintNewNft = () => {
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-lg-6 col-md-6 col-12">
-                            <h5 className="title text-center text-md-start">Crete a New File</h5>
+                            <h5 className="title text-center text-md-start">Mint new NFT</h5>
                         </div>
                         <div className="col-lg-6 col-md-6 col-12">
                             <ul className="breadcrumb-list">
                                 <li className="item"><a href="index.html">Home</a></li>
                                 <li className="separator"><i className="feather-chevron-right" /></li>
-                                <li className="item current">Crete a New File</li>
+                                <li className="item current">Mint new NFT</li>
                             </ul>
                         </div>
                     </div>
@@ -53,73 +76,32 @@ const MintNewNft = () => {
                                 </div>
                             </div>
                             {/* end upoad file area */}
-                            <div className="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
-                                <h5> Note: </h5>
-                                <span> Service fee : <strong>2.5%</strong> </span> <br />
-                                <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
-                            </div>
                         </div>
                         <div className="col-lg-7">
                             <div className="form-wrapper-one">
-                                <form className="row" action="#">
+                                <form className="row" onSubmit={handleSubmit}>
                                     <div className="col-md-12">
                                         <div className="input-box pb--20">
                                             <label htmlFor="name" className="form-label">Product Name</label>
-                                            <input id="name" placeholder="e. g. `Digital Awesome Game`" />
+                                            <input name="name" placeholder="e. g. `Digital Awesome Game`" />
                                         </div>
                                     </div>
                                     <div className="col-md-12">
                                         <div className="input-box pb--20">
-                                            <label htmlFor="Discription" className="form-label">Discription</label>
-                                            <textarea id="Discription" rows={3} placeholder="e. g. “After purchasing the product you can get item...”" defaultValue={""} />
+                                            <label htmlFor="Discription" className="form-label">Description</label>
+                                            <textarea name="description" rows={3} placeholder="e. g. “After purchasing the product you can get item...”" defaultValue={""} />
                                         </div>
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-6">
                                         <div className="input-box pb--20">
                                             <label htmlFor="dollerValue" className="form-label">Item Price in $</label>
-                                            <input id="dollerValue" placeholder="e. g. `20$`" />
+                                            <input name="price" placeholder="e. g. `20$`" />
                                         </div>
                                     </div>
-                                    <div className="col-md-4">
-                                        <div className="input-box pb--20">
-                                            <label htmlFor="Size" className="form-label">Size</label>
-                                            <input id="Size" placeholder="e. g. `Size`" />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="input-box pb--20">
-                                            <label htmlFor="Propertie" className="form-label">Propertie</label>
-                                            <input id="Propertie" placeholder="e. g. `Propertie`" />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
                                         <div className="input-box pb--20">
                                             <label htmlFor="Royality" className="form-label">Royality</label>
-                                            <input id="Royality" placeholder="e. g. `20%`" />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 col-sm-4">
-                                        <div className="input-box pb--20 rn-check-box">
-                                            <input className="rn-check-box-input" type="checkbox" id="putonsale" />
-                                            <label className="rn-check-box-label" htmlFor="putonsale">
-                                                Put on Sale
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 col-sm-4">
-                                        <div className="input-box pb--20 rn-check-box">
-                                            <input className="rn-check-box-input" type="checkbox" id="instantsaleprice" />
-                                            <label className="rn-check-box-label" htmlFor="instantsaleprice">
-                                                Instant Sale Price
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 col-sm-4">
-                                        <div className="input-box pb--20 rn-check-box">
-                                            <input className="rn-check-box-input" type="checkbox" id="unlockpurchased" />
-                                            <label className="rn-check-box-label" htmlFor="unlockpurchased">
-                                                Unlock Purchased
-                                            </label>
+                                            <input name="royality" placeholder="e. g. `20%`" />
                                         </div>
                                     </div>
                                     <div className="col-md-12 col-xl-4">
@@ -129,7 +111,7 @@ const MintNewNft = () => {
                                     </div>
                                     <div className="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                         <div className="input-box">
-                                            <button className="btn btn-primary btn-large w-100">Submit Item</button>
+                                            <button type='submit' className="btn btn-primary btn-large w-100">Mint Item</button>
                                         </div>
                                     </div>
                                 </form>
