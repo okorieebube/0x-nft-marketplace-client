@@ -2,34 +2,56 @@ import React from 'react'
 import Footer from '../components/Footer/Footer'
 import Header from '../components/Header/Header'
 import Modal from '../components/Modal/Modal'
+import boredPunk from '../abi/BOREDPUNK.json';
+import { useMoralis } from 'react-moralis';
 
 const MintNewNft = () => {
-    
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const values = Object.fromEntries(data.entries());
-    console.log(values);return;
-    // let validation = new Validator(values, rules);
+    const { Moralis } = useMoralis();
 
-    // validation.setAttributeNames(attributes);
-    // if (userAccount == undefined) {
-    //   SimpleToastError("Connect your wallet to proceed!");
-    //   return;
-    // }
 
-    // if (validation.fails()) {
-    //   ToastFormErrors(MapFormErrorsInArr(validation.errors.errors));
-    // }
+    function encodeImageFileAsURL(element: any) {
+        var file = element.files?.[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            console.log('RESULT', reader.result)
+        }
+        if (file !== undefined) {
+            reader.readAsDataURL(file);
+        }
+        console.log(file)
+    }
 
-    // if (validation.passes()) {
-    //   // console.log("passed");
-    //   dispatch(buyTokens(values.amount, referrer, userAccount));
-    // }
-  };
+
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+
+
+
+
+        const data = new FormData(e.target);
+        const values = Object.fromEntries(data.entries());
+        console.log(boredPunk.abi)
+        let options = {
+            contractAddress: "0x1BFC5EB174cDE253b081Aa33A065CeB4A1c7a1DE",
+            functionName: "mint",
+            abi: boredPunk.abi,
+            params: {
+                quantity: 1,
+            },
+        };
+        await Moralis.enableWeb3()
+        let txn = await Moralis.executeFunction(options)
+        console.log(txn); return;
+
+        // if (validation.passes()) {
+        //   // console.log("passed");
+        //   dispatch(buyTokens(values.amount, referrer, userAccount));
+        // }
+    };
     return (
         <div>
-        <Header />
+            <Header />
             {/* start page title area */}
             <div className="rn-breadcrumb-inner ptb--30">
                 <div className="container">
@@ -65,7 +87,7 @@ const MintNewNft = () => {
                                 </div>
                                 <div className="brows-file-wrapper">
                                     {/* actual upload which is hidden */}
-                                    <input name="createinputfile" id="createinputfile" type="file" className="inputfile" />
+                                    <input name="createinputfile" onChange={encodeImageFileAsURL(this)} id="createinputfile" type="file" className="inputfile" />
                                     <img id="createfileImage" src="assets/images/portfolio/portfolio-05.jpg" alt="Portfolio" data-black-overlay={6} />
                                     {/* our custom upload button */}
                                     <label htmlFor="createinputfile" title="No File Choosen">
@@ -95,13 +117,13 @@ const MintNewNft = () => {
                                     <div className="col-md-6">
                                         <div className="input-box pb--20">
                                             <label htmlFor="dollerValue" className="form-label">Item Price in $</label>
-                                            <input name="price" placeholder="e. g. `20$`" />
+                                            <input name="price" type="number" placeholder="e. g. `20$`" />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="input-box pb--20">
                                             <label htmlFor="Royality" className="form-label">Royality</label>
-                                            <input name="royality" placeholder="e. g. `20%`" />
+                                            <input name="royality" type="number" placeholder="e. g. `20%`" />
                                         </div>
                                     </div>
                                     <div className="col-md-12 col-xl-4">
@@ -126,8 +148,8 @@ const MintNewNft = () => {
                 </div>
             </div>
             {/* create new product area */}
-      <Modal />
-      <Footer />
+            <Modal />
+            <Footer />
         </div>
 
     )
