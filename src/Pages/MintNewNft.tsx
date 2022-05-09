@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Footer from '../components/Footer/Footer'
 import Header from '../components/Header/Header'
 import Modal from '../components/Modal/Modal'
@@ -7,31 +7,51 @@ import { useMoralis } from 'react-moralis';
 
 const MintNewNft = () => {
     const { Moralis } = useMoralis();
+    const [File, setFile] = useState('')
+    let xFile:string;
 
 
-    function encodeImageFileAsURL(element: any) {
-        var file = element.files?.[0];
-        var reader = new FileReader();
-        reader.onloadend = function () {
-            console.log('RESULT', reader.result)
-        }
-        if (file !== undefined) {
-            reader.readAsDataURL(file);
-        }
-        console.log(file)
-    }
+    // async function encodeImageFileAsURL(element: any) {
+    //     console.log(element)
+    //     var file = element.files?.[0];
+    //     var reader = new FileReader();
+    //     reader.onloadend = await function () {
+    //         console.log('RESULT', reader.result)
+    //     }
+    //     reader ? reader.readAsDataURL(file) : null;
 
+    //     console.log(file)
+    // }
+
+    document.querySelector('#createinputfile')?.addEventListener("change",
+        async function (this: HTMLInputElement) {
+            // console.log(this.files?.[0])
+
+            var file = this.files?.[0];
+            var reader = new FileReader();
+
+            if (file !== undefined)
+                reader.readAsDataURL(file)
+
+            reader.onloadend = await function () {
+                if (typeof reader.result === 'string') {
+                    setFile(reader.result)
+                    xFile = reader.result
+
+                    console.log(typeof (reader.result))
+                    console.log(reader.result)
+                }
+            }
+        })
 
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-
-
-
         const data = new FormData(e.target);
         const values = Object.fromEntries(data.entries());
         console.log(boredPunk.abi)
+        console.log(xFile);return;
         let options = {
             contractAddress: "0x1BFC5EB174cDE253b081Aa33A065CeB4A1c7a1DE",
             functionName: "mint",
@@ -87,7 +107,8 @@ const MintNewNft = () => {
                                 </div>
                                 <div className="brows-file-wrapper">
                                     {/* actual upload which is hidden */}
-                                    <input name="createinputfile" onChange={encodeImageFileAsURL(this)} id="createinputfile" type="file" className="inputfile" />
+                                    {/* onChange={encodeImageFileAsURL(this)} */}
+                                    <input name="createinputfile" id="createinputfile" type="file" className="inputfile" />
                                     <img id="createfileImage" src="assets/images/portfolio/portfolio-05.jpg" alt="Portfolio" data-black-overlay={6} />
                                     {/* our custom upload button */}
                                     <label htmlFor="createinputfile" title="No File Choosen">
